@@ -1,15 +1,11 @@
 import './ListTodos.css';
 import { Todo } from './Todo.jsx';
 
-export const ListTodos = ({ listTodos, setRefreshTodosFlag }) => {
+export const ListTodos = ({ todos }) => {
 	return (
 		<ul className="ul-list-todos">
-			{listTodos.map((todo) => (
-				<Todo
-					key={todo.id}
-					todo={todo}
-					setRefreshTodosFlag={setRefreshTodosFlag}
-				/>
+			{todos.map((todo) => (
+				<Todo key={todo.id} todo={todo} />
 			))}
 		</ul>
 	);

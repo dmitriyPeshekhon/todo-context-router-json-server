@@ -1,33 +1,31 @@
-import './TodoPage.css';
+import './FormEditTodo.css';
 import { useEffect, useState } from 'react';
-import { useRequestEditTodo } from '../../hooks/index';
+import { useNavigate } from 'react-router-dom';
 
 export const FormEditTodo = ({
-	loadedTodo,
-	id,
+	todo,
 	isLoadingButtons,
 	setIsLoadingButtons,
-	setRefreshTodosFlag,
+	handleEditTodo,
 }) => {
 	const [textArea, setTextArea] = useState('');
 
-	const requestEditTodo = useRequestEditTodo(
-		id,
-		setIsLoadingButtons,
-		setRefreshTodosFlag,
-	);
+	const navigate = useNavigate();
 
-	useEffect(() => setTextArea(loadedTodo ? loadedTodo.title : ''), [loadedTodo]); // Нужен что бы обновлять textArea так как его значение тянется из запроса на уровень выше
+	useEffect(() => setTextArea(todo ? todo.title : ''), [todo]); // Нужен что бы обновлять textArea так как его значение тянется из запроса на уровень выше
 
 	const onChangeTextArea = ({ target }) => {
-		if (loadedTodo) {
+		if (todo) {
 			setTextArea(target.value);
 		}
 	};
 
-	const handleSabmit = (e) => {
+	const handleSabmit = async (e) => {
 		e.preventDefault();
-		requestEditTodo(textArea);
+		setIsLoadingButtons(true);
+		await handleEditTodo({ ...todo, title: textArea });
+		setIsLoadingButtons(false);
+		navigate('/', { replace: true });
 	};
 
 	return (
@@ -44,9 +42,7 @@ export const FormEditTodo = ({
 				<button
 					className="todo-page-confirm-btn"
 					type="submit"
-					disabled={
-						textArea === '' || (loadedTodo && loadedTodo.title === textArea)
-					}
+					disabled={textArea === '' || (todo && todo.title === textArea)}
 				>
 					Применить
 				</button>

@@ -1,16 +1,15 @@
-import './ModalWindow.css';
+import './FormAddTodo.css';
 import { useState } from 'react';
-import { useRequestAddTodo } from '../../hooks/index';
+import { useTodos } from '../../hooks';
 
 export const FormAddTodo = ({
 	setIsModalOpen,
 	isLoadingAddTodo,
 	setIsLoadingAddTodo,
-	setRefreshTodosFlag,
 }) => {
 	const [textArea, setTextArea] = useState('');
 
-	const requestAddTodo = useRequestAddTodo(setRefreshTodosFlag, setIsLoadingAddTodo);
+	const { handleAddTodo } = useTodos();
 
 	const handleTextareaChange = ({ target }) => {
 		setTextArea(target.value);
@@ -18,7 +17,9 @@ export const FormAddTodo = ({
 
 	const handleFormSubmit = async (e) => {
 		e.preventDefault();
-		await requestAddTodo(textArea);
+		setIsLoadingAddTodo(true);
+		await handleAddTodo(textArea);
+		setIsLoadingAddTodo(false);
 		setIsModalOpen(false);
 	};
 
@@ -33,7 +34,7 @@ export const FormAddTodo = ({
 				onChange={handleTextareaChange}
 			></textarea>
 			{isLoadingAddTodo ? (
-				<span className="loader loader-add-todo"></span>
+				<span className="loader loader-add-todo" />
 			) : (
 				<button
 					className="btn-modal-window"

@@ -9,12 +9,6 @@
 	margin-bottom: 20px;
 }
 
-.empty-container-search {
-	height: 80px;
-	margin-bottom: 20px;
-	background: transparent;
-}
-
 .search-textfield {
 	border-radius: 5px;
 	border: solid 1px rgba(154,112,200,1);

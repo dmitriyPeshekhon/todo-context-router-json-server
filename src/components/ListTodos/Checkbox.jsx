@@ -1,26 +1,16 @@
 import './ListTodos.css';
-import { useState } from 'react';
-import { useRequestEditTodo } from '../../hooks';
 
-export const Checkbox = ({ todo, setRefreshTodosFlag }) => {
-	const [isLoadingCheckbox, setIsLoadingCheckbox] = useState(false);
-
-	const requestEditTodo = useRequestEditTodo(
-		todo.id,
-		setIsLoadingCheckbox,
-		setRefreshTodosFlag,
-	);
-
+export const Checkbox = ({ checked, isDisabled, onChange }) => {
 	return (
 		<div className="container-checkbox">
-			{isLoadingCheckbox ? (
-				<span className="loader loader-check-box"></span>
+			{isDisabled ? (
+				<span className="loader loader-check-box" />
 			) : (
 				<input
 					className="toggle-todo"
 					type="checkbox"
-					checked={todo.completed}
-					onChange={() => requestEditTodo(!todo.completed)}
+					checked={checked}
+					onChange={onChange}
 				/>
 			)}
 		</div>
